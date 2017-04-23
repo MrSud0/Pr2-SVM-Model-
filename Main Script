@@ -50,7 +50,6 @@ GDSdownload("GDS3716")
 eset3<-GDS2eSet(GEOdata,do.log2=TRUE)
 genoData3<-eset3@phenoData@data$specimen
 
-##################################
 eset3Reduced<-eset3[,genoData3 %in% c("ER- breast cancer","ER+ breast cancer")]
 genoData3<-factor(genoData3[genoData3 %in% c("ER- breast cancer","ER+ breast cancer")])
 
@@ -93,11 +92,13 @@ colnames(selectedMat)<-t(x[,1]);
 control<-trainControl(method = "repeatedcv",number = 10, repeats = 3)
 modelSvm<-train(x=selectedMat,y=genoData ,method="svmLinearWeights",trControl = control)
 
-pr1 <- predict(modelSvm, newdata = esetMat2T) #predict data for GDS4056
+#predict data for GDS4056
+pr1 <- predict(modelSvm, newdata = esetMat2T) 
 
-pr2 <- predict(modelSvm, newdata = esetMat3T) #predict data for GDS3716
+#predict data for GDS3716
+pr2 <- predict(modelSvm, newdata = esetMat3T)
 
-#####Runs till here correctly#####
+#####in progress#####
 cm1<-confusionMatrix(factorA,factorB , dnn = c("Prediction", "Reference")) #comfusionMarix  
 View(cm1$table) #comfusion matrix table
 View(cm$overall) #accuracy
