@@ -4,12 +4,15 @@
 DLB()
 
 install.packages("caret")
-biocLite("affy")
+
 install.packages("pathClass")
-library("crossVal")
 biocLite("crossval")
-
-
+library(e1071)
+library(C50)
+library(affy)
+library(crossval)
+library(caret)
+library(pathClass)
 
 ##################################
 ########### GDS4057 ##############
@@ -77,11 +80,11 @@ for( y in 1  : nrow(x))
   for (i in 1 :ncol(esetMatT))
   {
     if(temp[i]==x[y] & y == 1)
-      {selectedMat<-as.matrix(esetMatT[,i])
-       break} 
+    {selectedMat<-as.matrix(esetMatT[,i])
+    break} 
     if(temp[i]==x[y] & y != 1)
-      {selectedMat<-cbind(selectedMat,esetMatT[,i]) 
-       break}
+    {selectedMat<-cbind(selectedMat,esetMatT[,i]) 
+    break}
   }
 }
 #we put the names of the genes to the columns
@@ -93,20 +96,24 @@ control<-trainControl(method = "repeatedcv",number = 10, repeats = 3)
 modelSvm<-train(x=selectedMat,y=genoData ,method="svmLinearWeights",trControl = control)
 
 #predict data for GDS4056
-pr1 <- predict(modelSvm, newdata = esetMat2T) 
+pr1<- predict(modelSvm, newdata = esetMat2T) 
 
 #predict data for GDS3716
 pr2 <- predict(modelSvm, newdata = esetMat3T)
 
-#####in progress#####
-cm1<-confusionMatrix(factorA,factorB , dnn = c("Prediction", "Reference")) #comfusionMarix  
-View(cm1$table) #comfusion matrix table
-View(cm$overall) #accuracy
-cm2<-confusionMatrix(factorA,factorB , dnn = c("Prediction", "Reference"))
-View(cm2$table) #comfusion matrix table
-View(cm$overall) #accuracy
+#####Confusion matrix + accuracy finder function#####
+#creates a matrix "cm1" containing the confusion matrix
+#and a variable "accuracy" containing the accuracy
+CMAdjusted(pr4056,genoData2)
+View(cm1)
+View(accuracy)
+CMAdjusted(pr2,genoData3)
+View(cm1)
+View(accuracy)
 
 
+####################################################################################
+####################### Kmeans and rerun the code above ############################
 
 
 
