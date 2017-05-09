@@ -18,6 +18,7 @@ FSelection <- function (esetMatT,genoData) {
   selectedMat <- 0 #this will be the selected genes matrix
   
   #checks which genes are the important ones and creates a matrix with only those
+  #instead of this for i can also do , selectedMat <- tData[,selectedGenes$time.choosen.Var1]
   for( y in 1  : nrow(x))
   {
     for (i in 1 :ncol(esetMatT))
